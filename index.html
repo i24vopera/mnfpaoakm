@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tomášovy Kaskádové Styly</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="setup-screen">
+      <div class="setup-container">
+        <h1 class="game-title">Tomášovy Kaskádové Styly</h1>
+        <p class="subtitle">Procvič si CSS a poznej sílu kaskádových stylů!</p>
+        <div class="setup-form">
+          <div class="form-group">
+            <label>Úroveň dovedností</label>
+            <div class="btn-group" id="level-group">
+              <button class="btn-option" data-value="beginner">Beginner</button>
+              <button class="btn-option" data-value="intermediate">Intermediate</button>
+              <button class="btn-option" data-value="junior">Junior</button>
+              <button class="btn-option" data-value="senior">Senior</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Počet příkladů</label>
+            <div class="btn-group" id="count-group">
+              <button class="btn-option" data-value="3">3</button>
+              <button class="btn-option" data-value="5">5</button>
+              <button class="btn-option" data-value="7">7</button>
+              <button class="btn-option" data-value="9">9</button>
+            </div>
+          </div>
+          <button id="start-btn" class="btn-primary" disabled>Začít hru</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-screen" class="hidden">
+      <header id="game-header">
+        <div id="teacher-box">
+          <div id="teacher-face">😊</div>
+          <span id="teacher-label">Tomáš</span>
+        </div>
+        <h2 class="game-title-sm">Tomášovy Kaskádové Styly</h2>
+        <div id="score-box">
+          <span id="score-label">Skóre</span>
+          <span id="score">0</span>
+        </div>
+        <button id="settings-btn" title="Nastavení AI evaluace">AI</button>
+      </header>
+
+      <div id="progress-bar">
+        <div id="progress-fill"></div>
+        <span id="progress-text">Příklad 1 z 3</span>
+      </div>
+
+      <div id="game-main">
+        <div id="challenge-panel">
+          <div id="challenge-header">
+            <h3 id="challenge-title">Název příkladu</h3>
+            <span id="challenge-difficulty" class="badge">Beginner</span>
+          </div>
+          <p id="challenge-desc">Popis úkolu</p>
+          <div class="code-block">
+            <div class="code-header"><span>HTML</span></div>
+            <pre id="html-display" class="code-display"><code></code></pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span>Výchozí CSS</span></div>
+            <pre id="css-starter" class="code-display"><code></code></pre>
+          </div>
+        </div>
+
+        <div id="editor-panel">
+          <div class="panel-header">
+            <h3>Tvůj CSS kód</h3>
+            <button id="reset-btn" class="btn-small">Reset</button>
+          </div>
+          <div id="css-editor">
+            <textarea id="css-input" spellcheck="false" wrap="off"></textarea>
+          </div>
+          <div id="preview-box">
+            <div class="panel-header">
+              <h3>Náhled</h3>
+            </div>
+            <iframe id="preview-frame"></iframe>
+          </div>
+          <div id="result-box" class="hidden">
+            <span id="result-text"></span>
+          </div>
+          <div id="action-bar">
+            <button id="detail-btn" class="btn-small hidden">Detail</button>
+            <button id="submit-btn" class="btn-primary">Odevzdat</button>
+            <button id="next-btn" class="btn-secondary" disabled>Další →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-overlay" class="hidden">
+      <div id="modal-box">
+        <div id="modal-header">
+          <h3 id="modal-title">Detail hodnocení</h3>
+          <button id="modal-close" class="btn-close">&times;</button>
+        </div>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+
+    <div id="settings-overlay" class="hidden">
+      <div id="settings-box">
+        <div id="settings-header">
+          <h3>Nastavení</h3>
+          <button id="settings-close" class="btn-close">&times;</button>
+        </div>
+        <div id="settings-body">
+          <div class="form-group">
+            <label>Vyhodnocování pomocí AI</label>
+            <div class="toggle-row">
+              <label class="toggle">
+                <input type="checkbox" id="ai-toggle">
+                <span class="toggle-slider"></span>
+              </label>
+              <span id="ai-status">Vypnuto</span>
+            </div>
+          </div>
+          <div class="form-group" id="api-key-group">
+            <label>Gemini API klíč (zdarma)</label>
+            <input type="password" id="api-key-input" placeholder="Vlož svůj Gemini API klíč">
+            <p class="field-hint">Získej zdarma na <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a></p>
+          </div>
+          <p class="settings-note">AI vyhodnocení pošle tvůj CSS kód do Google Gemini API. Žádná data se neukládají.</p>
+          <button id="settings-save" class="btn-primary">Uložit</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="finish-screen" class="hidden">
+      <div class="finish-container">
+        <h1>Konec hry!</h1>
+        <div id="final-teacher">😊</div>
+        <p id="final-score-text">Tvé celkové skóre: <span id="final-score">0</span></p>
+        <p id="final-perfect-text">Počet perfektních řešení: <span id="final-perfect">0</span> / <span id="final-total">0</span></p>
+        <p id="final-message"></p>
+        <button id="replay-btn" class="btn-primary">Hrát znovu</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
